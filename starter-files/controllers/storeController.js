@@ -58,8 +58,9 @@ exports.getStores = async (req, res) => {
   res.render('stores', { title: 'Stores', stores})
 }
 
-exports.getStore = async (req, res) => {
+exports.getStoreBySlug = async (req, res, next) => {
   const store = await Store.findOne({ slug: req.params.slug })
+  if (!store) return next();
   res.render('store', { title: `${store.name}`, store})
 }
 
