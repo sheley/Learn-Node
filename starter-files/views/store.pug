@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  pre= h.dump(store)
+    .inner
+      h2= title
+      .store
+        p hi there
