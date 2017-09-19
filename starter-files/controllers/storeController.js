@@ -64,6 +64,12 @@ exports.getStoreBySlug = async (req, res, next) => {
   res.render('store', { title: `${store.name}`, store})
 }
 
+exports.getStoresByTag = async (req, res, next) => {
+  const tags = await Store.getTagsList();
+  const tag = req.params.tag
+  res.render('tag', { tags, title: 'Tags', tag })
+}
+
 exports.editStore = async  (req, res) => {
   // find store with given id
   const store = await Store.findOne({ _id: req.params.id })
