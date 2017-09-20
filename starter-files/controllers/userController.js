@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const User = mongoose.model('User');
+const promisify = require('es6-promisify');
 
 exports.loginForm = (req, res) => {
   res.render('login', {title: 'Login'});
@@ -31,4 +33,18 @@ exports.validateRegister = (req, res, next) => {
     return; // stop the fn from running
   }
   next(); // there were no errors!
+}
+
+exports.register = async (req, res, next) => {
+  const user = new User({email: req.body.email, name: req.body.name});
+
+  // external lib's register doesn't return a promise
+  // User.register(user, request.body.password, function(err, user) {});
+  // so let's promisify it
+  const register = promisify(User.register, User);
+  // note, if you're passing a method to promisify that is on an object (ex: on the User model) then you have
+  // to pass what to bind it to.
+
+  await register(user, req.body.password);
+  next(); // pass to authController.login
 }

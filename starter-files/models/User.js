@@ -22,7 +22,9 @@ const userSchema = new Schema({
   }
 });
 
+// exposes a method called register
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
+
 userSchema.plugin(mongodbErrorHandler);
 
 module.exports = mongoose.model('User', userSchema);
